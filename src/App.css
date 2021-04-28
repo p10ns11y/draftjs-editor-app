@@ -1,6 +1,7 @@
 .App {
   display: grid;
-  place-items: center;
+  /* place-items: center; */
+  justify-content: center;
   min-height: 100vh;
 }
 
@@ -20,13 +21,20 @@
 /* Overrides */
 .RichEditor-root {
   background: #fff;
-  border: 1px solid #ddd;
+  max-width: 500px;
   font-size: 14px;
   padding: 15px;
+  display: grid;
+  align-items: self-start;
+}
+
+.RichEditor-controls-container {
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
 }
 
 .RichEditor-editor {
-  border-top: 1px solid #ddd;
+  border: 1px solid #ddd;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   cursor: text;
   font-size: 16px;
   margin-top: 10px;
