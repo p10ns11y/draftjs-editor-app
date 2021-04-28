@@ -4,28 +4,58 @@ import { ContentState, EditorState, convertFromHTML } from 'draft-js';
 const EditorContext = React.createContext();
 
 // Legacy contract data
-const sampleMarkup =
-  '<p>Hello from Peram!</p>\n\n<h1>This is a header</h1>\n\n<blockquote>Awesome quote</blockquote>';
+// const sampleMarkup =
+//   '<p>Hello from Peram!</p>\n\n<h1>This is a header</h1>\n\n<blockquote>Awesome quote</blockquote>';
 
-const blocksFromHTML = convertFromHTML(sampleMarkup);
-const initialEditorState = ContentState.createFromBlockArray(
-  blocksFromHTML.contentBlocks,
-  blocksFromHTML.entityMap
-);
+function getInitialEditorState(markup) {
+  if (!markup) {
+    return EditorState.createEmpty();
+  }
+
+  const blocksFromHTML = convertFromHTML(markup);
+  const initialEditorContent = ContentState.createFromBlockArray(
+    blocksFromHTML.contentBlocks,
+    blocksFromHTML.entityMap
+  );
+
+  return EditorState.createWithContent(initialEditorContent);
+}
 
 export function EditorProvider({ children }) {
-  const [editorState, setEditorState] = React.useState(() =>
-    EditorState.createWithContent(initialEditorState)
+  const [
+    [currentEditorState, setCurrentEditorState],
+    setCurrentEditor,
+  ] = React.useState([null, () => {}]);
+
+  const changeCurrentEditor = React.useCallback(
+    ([editorState, setEditorState]) => {
+      if (
+        currentEditorState === editorState &&
+        setCurrentEditorState === setEditorState
+      ) {
+        return;
+      }
+      setCurrentEditor([editorState, setEditorState]);
+    },
+    [currentEditorState, setCurrentEditorState]
+  );
+
+  const editorContextValue = React.useMemo(
+    () => ({
+      currentEditor: [currentEditorState, setCurrentEditorState],
+      changeCurrentEditor,
+    }),
+    [changeCurrentEditor, currentEditorState, setCurrentEditorState]
   );
 
   return (
-    <EditorContext.Provider value={[editorState, setEditorState]}>
+    <EditorContext.Provider value={editorContextValue}>
       {children}
     </EditorContext.Provider>
   );
 }
 
-export function useEditor() {
+export function useCurrentEditor() {
   const editorContextValue = React.useContext(EditorContext);
 
   if (editorContextValue === undefined) {
@@ -33,4 +63,8 @@ export function useEditor() {
   }
 
   return editorContextValue;
+}
+
+export function useNewRichTextEditor(initialEditorMarkup) {
+  return React.useState(() => getInitialEditorState(initialEditorMarkup));
 }

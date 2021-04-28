@@ -1,3 +1,6 @@
+import 'draft-js/dist/Draft.css';
+import { RichUtils } from 'draft-js';
+import { useCurrentEditor } from '../editor-context';
 import StyleButton from './style-button';
 
 const BLOCK_TYPES = [
@@ -11,10 +14,18 @@ const BLOCK_TYPES = [
   { label: 'UL', style: 'unordered-list-item' },
   { label: 'OL', style: 'ordered-list-item' },
   { label: 'Code Block', style: 'code-block' },
-  // { label: 'Image', style: 'atomic' },
 ];
 
-export default function BlockStyleControls({ editorState, onToggle }) {
+export default function BlockStyleControls() {
+  const {
+    currentEditor: [editorState, setEditorState],
+    changeCurrentEditor,
+  } = useCurrentEditor();
+
+  if (!editorState) {
+    return null;
+  }
+
   const selection = editorState.getSelection();
   const blockType = editorState
     .getCurrentContent()
@@ -28,7 +39,14 @@ export default function BlockStyleControls({ editorState, onToggle }) {
           key={type.label}
           active={type.style === blockType}
           label={type.label}
-          onToggle={onToggle}
+          onToggle={(blockType) => {
+            const newEditorState = RichUtils.toggleBlockType(
+              editorState,
+              blockType
+            );
+            setEditorState(newEditorState);
+            changeCurrentEditor([newEditorState, setEditorState]);
+          }}
           style={type.style}
         />
       ))}

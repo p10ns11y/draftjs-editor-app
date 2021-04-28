@@ -4,12 +4,12 @@ export default function RandomContent(params) {
       <h1>Pros</h1>
       <ul>
         <li>Highly controllable/configurable with low-level-apis</li>
-        <li>Convert from html</li>
+        <li>Convert from html to editor-specific immutable-js record</li>
       </ul>
       <h1>Cons</h1>
       <ul>
         <li>
-          No mobile browser support
+          No full mobile browser support
           (https://draftjs.org/docs/advanced-topics-issues-and-pitfalls#mobile-not-yet-supported)
         </li>
         <li>
