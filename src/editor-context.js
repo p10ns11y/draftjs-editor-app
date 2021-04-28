@@ -26,7 +26,7 @@ export function EditorProvider({ children }) {
   ] = React.useState([null, noop]);
 
   const changeCurrentEditor = React.useCallback(
-    ([editorState, setEditorState]) => {
+    (editorState, setEditorState) => {
       setCurrentEditor([editorState, setEditorState]);
     },
     []

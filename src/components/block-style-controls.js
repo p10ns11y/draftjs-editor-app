@@ -45,7 +45,7 @@ export default function BlockStyleControls() {
               blockType
             );
             setEditorState(newEditorState);
-            changeCurrentEditor([newEditorState, setEditorState]);
+            changeCurrentEditor(newEditorState, setEditorState);
           }}
           style={type.style}
         />

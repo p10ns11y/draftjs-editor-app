@@ -51,7 +51,7 @@ export default function RichTextEditor({ markup }) {
   const handleOnChange = React.useCallback(
     (newEditorState) => {
       setEditorState(newEditorState);
-      changeCurrentEditor([newEditorState, setEditorState]);
+      changeCurrentEditor(newEditorState, setEditorState);
     },
     [changeCurrentEditor, setEditorState]
   );

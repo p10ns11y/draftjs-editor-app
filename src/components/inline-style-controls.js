@@ -35,7 +35,7 @@ export default function InlineStyleControls() {
               inlineStyle
             );
             setEditorState(newEditorState);
-            changeCurrentEditor([newEditorState, setEditorState]);
+            changeCurrentEditor(newEditorState, setEditorState);
           }}
           style={type.style}
         />
