@@ -3,10 +3,6 @@ import { ContentState, EditorState, convertFromHTML } from 'draft-js';
 
 const EditorContext = React.createContext();
 
-// Legacy contract data
-// const sampleMarkup =
-//   '<p>Hello from Peram!</p>\n\n<h1>This is a header</h1>\n\n<blockquote>Awesome quote</blockquote>';
-
 function getInitialEditorState(markup) {
   if (!markup) {
     return EditorState.createEmpty();
@@ -21,23 +17,19 @@ function getInitialEditorState(markup) {
   return EditorState.createWithContent(initialEditorContent);
 }
 
+const noop = () => {};
+
 export function EditorProvider({ children }) {
   const [
     [currentEditorState, setCurrentEditorState],
     setCurrentEditor,
-  ] = React.useState([null, () => {}]);
+  ] = React.useState([null, noop]);
 
   const changeCurrentEditor = React.useCallback(
     ([editorState, setEditorState]) => {
-      if (
-        currentEditorState === editorState &&
-        setCurrentEditorState === setEditorState
-      ) {
-        return;
-      }
       setCurrentEditor([editorState, setEditorState]);
     },
-    [currentEditorState, setCurrentEditorState]
+    []
   );
 
   const editorContextValue = React.useMemo(

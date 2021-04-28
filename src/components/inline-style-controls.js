@@ -13,6 +13,7 @@ const INLINE_STYLES = [
 export default function InlineStyleControls() {
   const {
     currentEditor: [editorState, setEditorState],
+    changeCurrentEditor,
   } = useCurrentEditor();
 
   if (!editorState) {
@@ -29,11 +30,12 @@ export default function InlineStyleControls() {
           active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={(inlineStyle) => {
-            const newState = RichUtils.toggleInlineStyle(
+            const newEditorState = RichUtils.toggleInlineStyle(
               editorState,
               inlineStyle
             );
-            setEditorState(newState);
+            setEditorState(newEditorState);
+            changeCurrentEditor([newEditorState, setEditorState]);
           }}
           style={type.style}
         />
